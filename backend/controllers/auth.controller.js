@@ -80,16 +80,58 @@ export const signup = async (req, res) => {
 
 // Login function to handle user login requests
 export const login = async (req, res) => {
-  res.json({
-    // Send a response indicating that the login endpoint was hit successfully
-    data: "Hitted login endpoint",
+ try{
+  const {username, password} = req.body;
+  const user = await User.findOne ({username});
+  const isPasswordCorrect = await bcrypt.compare(password,user?.password || "")
+  if(!user ||  !isPasswordCorrect){
+    return res.status(400).json({error: "Invalid username or password"})
+  }
+
+  generateTokenAndSetCookie(user._id,res);
+
+  res.status(200).json({
+    _id: user._id,
+    fullname: user.fullName,
+    username: user.username,
+    email: user.email,
+    followers: user.followers,
+    following: user.following,
+    profileImg: user.profileImg,
+    coverImg: user.coverImg,
   });
+
+ }
+ catch(error){
+   // Log the error message in the console
+   console.log("Error in login controller", error.message);
+   // Return a 500 status indicating an internal server error
+   res.status(500).json({ error: "Internal Server Error" });
+ }
 };
 
 // Logout function to handle user logout requests
 export const logout = async (req, res) => {
-  res.json({
-    // Send a response indicating that the logout endpoint was hit successfully
-    data: "Hitted logout endpoint",
-  });
+ try{
+  res.cookie("jwt","",{maxAge:0})
+  res.status(200).json({message:"Logged out successfully"})
+ }
+ catch(error){
+  console.log("Error in loginout controller", error.message);
+  // Return a 500 status indicating an internal server error
+  res.status(500).json({ error: "Internal Server Error" });
+ }
 };
+
+
+export const getMe = async (req,res)=>{
+  try{
+ const user= await User.findById(req.user._id).select("-password");
+ res.status(200).json(user);
+  }
+  catch(error){
+    console.log("Error in getme controller", error.message);
+    // Return a 500 status indicating an internal server error
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
