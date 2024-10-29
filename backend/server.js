@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 import {v2 as cloudinary} from  'cloudinary';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/auth.routes.js';
-import userRoutes from './routes/user.routes.js';
-import postsRoutes from './routes/post.routes.js';
+import authRoutes from './routes/auth.route.js';
+import userRoutes from './routes/user.route.js';
+import postsRoutes from './routes/post.route.js';
 
 import connectMongoDB from './db/connectMongoDB.js'
 
@@ -38,4 +38,4 @@ app.listen(PORT,()=>{
 
 
 //link: https://www.youtube.com/watch?v=MDZC8VDZnV8&t=17s
-//timestamp: 3:50:26
+//timestamp: 4:47:26
