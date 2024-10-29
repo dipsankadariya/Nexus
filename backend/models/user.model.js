@@ -47,7 +47,14 @@ const userSchema = new mongoose.Schema({
      link:{
         type:String,
         default:"",
-     }
+     },
+     likedPosts:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: []
+           } 
+     ]
 
 
 },{timestamps:true})
