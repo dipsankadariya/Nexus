@@ -39,5 +39,3 @@ app.listen(PORT,()=>{
 });
 
 
-//link: https://www.youtube.com/watch?v=MDZC8VDZnV8&t=17s
-//timestamp: 4:47:26
